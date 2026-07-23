@@ -1,0 +1,73 @@
+<view class="container">
+  <!-- 顶部高质感搜索栏 -->
+  <view class="search-section">
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input placeholder="搜索博客文章关键词..." bindinput="onSearchInput" value="{{keyword}}"/>
+      <text wx:if="{{keyword}}" class="clear-icon" bindtap="clearSearch">✕</text>
+    </view>
+  </view>
+
+  <!-- 当前选中的特殊筛选指示条 (如从分类页选择标签跳转进来) -->
+  <view class="filter-indicator" wx:if="{{currentTag || currentCategory !== '全部'}}">
+    <text class="filter-txt">正在筛选：{{currentTag ? ('🏷️ #' + currentTag) : ('📂 ' + currentCategory)}}</text>
+    <text class="clear-btn" bindtap="clearAllFilters">重置全部 ✕</text>
+  </view>
+
+  <!-- 动态横向滑动分类胶囊栏 -->
+  <scroll-view scroll-x class="category-scroll" enable-flex show-scrollbar="{{false}}">
+    <view class="cat-pill {{currentCategory === '全部' && !currentTag ? 'active' : ''}}" bindtap="selectCategory" data-cat="全部">
+      全部
+    </view>
+    <block wx:for="{{categories}}" wx:key="*this">
+      <view class="cat-pill {{currentCategory === item && !currentTag ? 'active' : ''}}" bindtap="selectCategory" data-cat="{{item}}">
+        {{item}}
+      </view>
+    </block>
+  </scroll-view>
+
+  <!-- 文章列表区域 -->
+  <view class="article-list">
+    <block wx:for="{{filteredArticles}}" wx:key="id">
+      <view class="article-card" bindtap="goToDetail" data-id="{{item.id}}">
+        <!-- 文章封面图 -->
+        <image wx:if="{{item.coverImage}}" class="cover-image" src="{{item.coverImage}}" mode="aspectFill" lazy-load/>
+
+        <view class="card-body">
+          <view class="tag-row">
+            <text class="cat-badge">{{item.categories && item.categories.length > 0 ? item.categories[0] : '随笔'}}</text>
+            <text class="read-time">⏱ {{item.readTime || 3}} 分钟阅读</text>
+          </view>
+          
+          <text class="title">{{item.title}}</text>
+          <text class="excerpt">{{item.excerpt}}</text>
+          
+          <view class="footer-meta">
+            <view class="author-info">
+              <text class="author-name">👤 {{item.author || '博主'}}</text>
+              <text class="dot">·</text>
+              <text class="date">{{item.date}}</text>
+            </view>
+            <view class="stats">
+              <text class="stat-item">👁 {{item.views || 320}}</text>
+              <text class="stat-item">❤️ {{item.likes || 18}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 无文章时的优雅空状态 -->
+    <view class="empty-box" wx:if="{{filteredArticles.length === 0}}">
+      <text class="empty-emoji">📄</text>
+      <text class="empty-title">未找到相关文章</text>
+      <text class="empty-sub">尝试更换搜索关键词或重置分类筛选</text>
+      <button class="reset-btn" bindtap="clearAllFilters">清除筛选条件</button>
+    </view>
+  </view>
+
+  <!-- 全局客服悬浮按钮 -->
+  <button open-type="contact" class="float-contact-btn" aria-label="联系客服">
+    <text class="contact-emoji">🎧</text>
+  </button>
+</view>

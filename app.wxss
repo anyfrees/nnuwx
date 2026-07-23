@@ -1,0 +1,28 @@
+/* 全局 CSS 重置与设计规范 */
+page {
+  background-color: #F6F7F9;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
+  color: #1E293B;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+view, text, image, input, button, scroll-view {
+  box-sizing: border-box;
+}
+
+/* 通用无缝边框卡片 */
+.card-shadow {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.04);
+}
+
+/* 微信绿高亮背景与渐变 */
+.primary-bg {
+  background-color: #07C160;
+}
+
+.primary-color {
+  color: #07C160;
+}

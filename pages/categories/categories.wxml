@@ -1,0 +1,37 @@
+<view class="container">
+  <!-- 顶栏 Segment 控制器 -->
+  <view class="segmented-header">
+    <view class="seg-item {{activeTab === 'cat' ? 'active' : ''}}" bindtap="switchTab" data-tab="cat">
+      📂 专题分类 ({{categories.length}})
+    </view>
+    <view class="seg-item {{activeTab === 'tag' ? 'active' : ''}}" bindtap="switchTab" data-tab="tag">
+      🏷️ 热门标签 ({{tags.length}})
+    </view>
+  </view>
+
+  <!-- 专题分类列表 -->
+  <view class="category-section" wx:if="{{activeTab === 'cat'}}">
+    <block wx:for="{{categories}}" wx:key="*this">
+      <view class="cat-card" bindtap="onSelectCategory" data-name="{{item}}">
+        <view class="cat-left">
+          <text class="cat-icon">📚</text>
+          <text class="cat-name">{{item}}</text>
+        </view>
+        <view class="cat-right">
+          <text class="arrow">›</text>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 热门标签云 -->
+  <view class="tag-section" wx:if="{{activeTab === 'tag'}}">
+    <view class="tag-cloud">
+      <block wx:for="{{tags}}" wx:key="*this">
+        <view class="tag-chip" bindtap="onSelectTag" data-name="{{item}}">
+          # {{item}}
+        </view>
+      </block>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,48 @@
+<view class="detail-container">
+  <!-- 文章头部大图 (如有) -->
+  <image wx:if="{{article.coverImage}}" class="cover-banner" src="{{article.coverImage}}" mode="aspectFill"/>
+
+  <view class="article-header">
+    <text class="title">{{article.title}}</text>
+    
+    <view class="meta-bar">
+      <view class="author-block">
+        <text class="avatar-icon">👤</text>
+        <text class="author-name">{{article.author || '博主'}}</text>
+      </view>
+      <text class="date">{{article.date}}</text>
+      <text class="views">👁 {{article.views || 450}} 次阅读</text>
+    </view>
+
+    <view class="categories-row">
+      <block wx:for="{{article.categories}}" wx:key="*this">
+        <text class="cat-tag">{{item}}</text>
+      </block>
+    </view>
+  </view>
+
+  <!-- HTML 富文本排版解析区域 -->
+  <view class="rich-content">
+    <rich-text nodes="{{article.content}}"></rich-text>
+  </view>
+
+  <!-- 文章标签 -->
+  <view class="tags-section" wx:if="{{article.tags && article.tags.length > 0}}">
+    <text class="section-title">相关标签：</text>
+    <view class="tag-chips">
+      <block wx:for="{{article.tags}}" wx:key="*this">
+        <text class="tag-chip"># {{item}}</text>
+      </block>
+    </view>
+  </view>
+
+  <!-- 底部吸底快捷功能栏 -->
+  <view class="bottom-bar">
+    <button class="action-btn share-btn" open-type="share">
+      <text class="btn-icon">🔗</text> 分享文章
+    </button>
+    <button class="action-btn contact-btn" open-type="contact">
+      <text class="btn-icon">🎧</text> 咨询博主
+    </button>
+  </view>
+</view>

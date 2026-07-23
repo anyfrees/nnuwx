@@ -1,0 +1,15 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "nnu-blog-miniapp",
+  "description": "NNU 博客原生微信小程序",
+  "appid": "wx50207050f6a7b613",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true
+  },
+  "compileType": "miniprogram",
+  "simulatorPluginLibVersion": {}
+}

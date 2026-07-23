@@ -1,0 +1,43 @@
+.profile-container {
+  padding: 30rpx;
+}
+.user-card {
+  background: #ffffff;
+  border-radius: 24rpx;
+  padding: 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+.avatar-box {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  margin-bottom: 20rpx;
+  background: #E8F5E9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.avatar-emoji {
+  font-size: 60rpx;
+}
+.name {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+.menu-list {
+  background: #ffffff;
+  border-radius: 24rpx;
+  overflow: hidden;
+}
+.menu-item {
+  width: 100% !important;
+  text-align: left;
+  background: #ffffff;
+  padding: 30rpx;
+  font-size: 28rpx;
+  border-bottom: 1px solid #f1f5f9;
+  font-weight: normal;
+}

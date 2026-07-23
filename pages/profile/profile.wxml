@@ -1,0 +1,13 @@
+<view class="profile-container">
+  <view class="user-card">
+    <view class="avatar-box">
+      <text class="avatar-emoji">👤</text>
+    </view>
+    <text class="name">NNU 博客读者</text>
+  </view>
+
+  <view class="menu-list">
+    <button open-type="contact" class="menu-item">💬 官方微信客服</button>
+    <button open-type="share" class="menu-item">🔗 分享给好友</button>
+  </view>
+</view>

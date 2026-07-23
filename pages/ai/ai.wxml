@@ -1,0 +1,19 @@
+<view class="ai-container">
+  <view class="ai-header">
+    <text class="title">🤖 AI 博客智能助手</text>
+    <text class="sub">可以问我任何关于本博客文章或学术前沿的问题</text>
+  </view>
+
+  <scroll-view scroll-y class="chat-list">
+    <block wx:for="{{messages}}" wx:key="index">
+      <view class="msg-item {{item.role}}">
+        <text class="msg-bubble">{{item.content}}</text>
+      </view>
+    </block>
+  </scroll-view>
+
+  <view class="input-bar">
+    <input value="{{inputText}}" bindinput="onInput" placeholder="输入问题咨询 AI 助手..." />
+    <button bindtap="sendMessage" type="primary" size="mini">发送</button>
+  </view>
+</view>
