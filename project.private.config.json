@@ -1,6 +1,6 @@
 {
-  "libVersion": "3.15.3",
-  "projectname": "nnuapp",
+  "libVersion": "3.8.12",
+  "projectname": "empty",
   "setting": {
     "urlCheck": false,
     "coverView": true,
@@ -9,6 +9,13 @@
     "preloadBackgroundData": false,
     "autoAudits": true,
     "showShadowRootInWxmlPanel": true,
-    "compileHotReLoad": true
+    "compileHotReLoad": true,
+    "useApiHook": true,
+    "useStaticServer": false,
+    "useLanDebug": false,
+    "showES6CompileOption": false,
+    "checkInvalidKey": true,
+    "ignoreDevUnusedFiles": true,
+    "bigPackageSizeSupport": false
   }
 }

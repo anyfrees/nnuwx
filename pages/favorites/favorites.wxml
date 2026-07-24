@@ -1,0 +1,32 @@
+<view class="page-container">
+  <view class="header-bar" wx:if="{{favorites.length > 0}}">
+    <text class="header-count">共 {{favorites.length}} 篇收藏</text>
+    <text class="clear-btn" bindtap="clearAll">清空全部</text>
+  </view>
+
+  <block wx:for="{{favorites}}" wx:key="id">
+    <view class="fav-card card fade-in" style="animation-delay:{{index * 0.06}}s;">
+      <view class="fav-main" bindtap="goDetail" data-id="{{item.id}}">
+        <image class="fav-cover" src="{{item.coverImage}}" mode="aspectFill" lazy-load/>
+        <view class="fav-body">
+          <text class="fav-title">{{item.title}}</text>
+          <text class="fav-excerpt">{{item.excerpt}}</text>
+          <view class="fav-footer">
+            <text class="fav-date"><image class="icon-sm" src="/images/icons/calendar.png" mode="aspectFit"/> {{item.date}}</text>
+            <text class="fav-cat">{{item.categories[0] || '未分类'}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="fav-action" bindtap="removeFavorite" data-id="{{item.id}}">
+        <image class="icon-sm" src="/images/icons/trash.png" mode="aspectFit"/>
+        <text> 取消收藏</text>
+      </view>
+    </view>
+  </block>
+
+  <view class="empty-state" wx:if="{{favorites.length === 0}}">
+    <image class="empty-icon-img" src="/images/icons/star.png" mode="aspectFit"/>
+    <text class="empty-title">还没有收藏</text>
+    <text class="empty-desc">在文章详情页点击收藏按钮即可添加</text>
+  </view>
+</view>

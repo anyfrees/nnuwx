@@ -1,13 +1,93 @@
-<view class="profile-container">
-  <view class="user-card">
-    <view class="avatar-box">
-      <text class="avatar-emoji">👤</text>
+<view class="page-container">
+
+  <!-- 统计面板 -->
+  <view class="stats-grid">
+    <view class="stat-card card">
+      <text class="stat-num">{{stats.totalArticles || 0}}</text>
+      <text class="stat-label">累计文章</text>
     </view>
-    <text class="name">NNU 博客读者</text>
+    <view class="stat-card card">
+      <text class="stat-num">{{stats.totalViews || 0}}</text>
+      <text class="stat-label">累计阅读</text>
+    </view>
+    <view class="stat-card card">
+      <text class="stat-num">{{stats.totalCategories || 0}}</text>
+      <text class="stat-label">累计分类</text>
+    </view>
+    <view class="stat-card card">
+      <text class="stat-num">6+</text>
+      <text class="stat-label">建站时间(年)</text>
+    </view>
   </view>
 
-  <view class="menu-list">
-    <button open-type="contact" class="menu-item">💬 官方微信客服</button>
-    <button open-type="share" class="menu-item">🔗 分享给好友</button>
+  <!-- 功能菜单 -->
+  <view class="menu-section">
+    <!-- 收藏 -->
+    <view class="menu-card card ripple" bindtap="goFavorites">
+      <view class="menu-left">
+        <image class="menu-icon-img" src="/images/icons/star.png" mode="aspectFit"/>
+        <text class="menu-title">我的收藏</text>
+      </view>
+      <view class="menu-right">
+        <text class="menu-badge" wx:if="{{favCount > 0}}">{{favCount}}</text>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 阅读历史 -->
+    <view class="menu-card card ripple" bindtap="goHistory">
+      <view class="menu-left">
+        <image class="menu-icon-img" src="/images/icons/clock.png" mode="aspectFit"/>
+        <text class="menu-title">阅读历史</text>
+      </view>
+      <view class="menu-right">
+        <text class="menu-badge" wx:if="{{histCount > 0}}">{{histCount}}</text>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 外观模式（仅浅色） -->
+    <view class="menu-card card ripple" bindtap="changeTheme">
+      <view class="menu-left">
+        <image class="menu-icon-img theme-icon" src="/images/icons/sun.png" mode="aspectFit"/>
+        <text class="menu-title">外观模式</text>
+      </view>
+      <view class="menu-right">
+        <view class="theme-indicator">
+          <view class="theme-dot dot-light"></view>
+          <text class="menu-value">{{themeText}}</text>
+        </view>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 联系我 -->
+    <view class="menu-card card ripple menu-contact">
+      <view class="menu-left">
+        <image class="menu-icon-img" src="/images/icons/comment.png" mode="aspectFit"/>
+        <text class="menu-title">联系我</text>
+      </view>
+      <view class="menu-right">
+        <text class="menu-arrow">›</text>
+      </view>
+      <button class="contact-overlay" open-type="contact" session-from="nnu-wx"></button>
+    </view>
+
+    <!-- 关于 -->
+    <view class="menu-card card ripple" bindtap="goAbout">
+      <view class="menu-left">
+        <image class="menu-icon-img" src="/images/icons/info.png" mode="aspectFit"/>
+        <text class="menu-title">关于NNU技术博客</text>
+      </view>
+      <view class="menu-right">
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
   </view>
+
+  <!-- 底部 -->
+  <view class="footer">
+    <text class="footer-text">Copyright ©2022-2026 NNU.CN.</text>
+  </view>
+
 </view>

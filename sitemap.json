@@ -1,5 +1,4 @@
 {
-  "desc": "关于本小程序 Sitemap 的配置",
   "rules": [{
     "action": "allow",
     "page": "*"

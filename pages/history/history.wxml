@@ -1,0 +1,28 @@
+<view class="page-container">
+  <view class="header-bar" wx:if="{{history.length > 0}}">
+    <text class="header-count">最近 {{history.length}} 篇阅读记录</text>
+    <text class="clear-btn" bindtap="clearAll">清空全部</text>
+  </view>
+
+  <!-- 阅读历史列表 -->
+  <view class="history-list">
+    <block wx:for="{{history}}" wx:key="id" wx:for-item="item" wx:for-index="idx">
+      <view class="history-card card fade-in" style="animation-delay:{{idx * 0.05}}s;" bindtap="goDetail" data-id="{{item.id}}">
+        <view class="hist-content">
+          <text class="hist-title">{{item.title}}</text>
+          <text class="hist-excerpt">{{item.excerpt}}</text>
+          <view class="hist-meta">
+            <text class="hist-cat">{{item.categories[0] || '文章'}}</text>
+            <text class="hist-date">{{item.date}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <view class="empty-state" wx:if="{{history.length === 0}}">
+    <image class="empty-icon-img" src="/images/icons/book.png" mode="aspectFit"/>
+    <text class="empty-title">暂无阅读记录</text>
+    <text class="empty-desc">阅读文章后将自动记录在这里</text>
+  </view>
+</view>

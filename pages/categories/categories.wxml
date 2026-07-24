@@ -1,37 +1,46 @@
-<view class="container">
-  <!-- 顶栏 Segment 控制器 -->
-  <view class="segmented-header">
-    <view class="seg-item {{activeTab === 'cat' ? 'active' : ''}}" bindtap="switchTab" data-tab="cat">
-      📂 专题分类 ({{categories.length}})
+<view class="page-container">
+  <!-- Segment 切换 -->
+  <view class="seg-bar">
+    <view class="seg-item {{activeTab === 'category' ? 'seg-active' : ''}}" bindtap="switchTab" data-tab="category">
+      <image class="seg-icon" src="/images/icons/folder.png" mode="aspectFit"/> 分类
     </view>
-    <view class="seg-item {{activeTab === 'tag' ? 'active' : ''}}" bindtap="switchTab" data-tab="tag">
-      🏷️ 热门标签 ({{tags.length}})
+    <view class="seg-item {{activeTab === 'tag' ? 'seg-active' : ''}}" bindtap="switchTab" data-tab="tag">
+      <image class="seg-icon" src="/images/icons/tag.png" mode="aspectFit"/> 标签
     </view>
   </view>
 
-  <!-- 专题分类列表 -->
-  <view class="category-section" wx:if="{{activeTab === 'cat'}}">
-    <block wx:for="{{categories}}" wx:key="*this">
-      <view class="cat-card" bindtap="onSelectCategory" data-name="{{item}}">
-        <view class="cat-left">
-          <text class="cat-icon">📚</text>
-          <text class="cat-name">{{item}}</text>
-        </view>
-        <view class="cat-right">
-          <text class="arrow">›</text>
-        </view>
+  <!-- 分类九宫格 -->
+  <view class="grid-container" wx:if="{{activeTab === 'category'}}">
+    <block wx:for="{{categories}}" wx:key="name">
+      <view class="grid-card card ripple fade-in" 
+            style="animation-delay:{{index * 0.06}}s;"
+            bindtap="onCategoryTap" data-name="{{item.name}}" data-icon="{{item.icon}}">
+        <image class="grid-icon" src="{{item.icon}}" mode="aspectFit"/>
+        <text class="grid-name">{{item.name}}</text>
+        <text class="grid-count">{{item.count}} 篇</text>
       </view>
     </block>
+    <!-- 空状态 -->
+    <view class="grid-empty" wx:if="{{categories.length === 0}}">
+      <image class="empty-icon-img" src="/images/icons/empty.png" mode="aspectFit"/>
+      <text class="empty-txt">暂无分类数据</text>
+    </view>
   </view>
 
-  <!-- 热门标签云 -->
+  <!-- 标签云 -->
   <view class="tag-section" wx:if="{{activeTab === 'tag'}}">
     <view class="tag-cloud">
       <block wx:for="{{tags}}" wx:key="*this">
-        <view class="tag-chip" bindtap="onSelectTag" data-name="{{item}}">
-          # {{item}}
+        <view class="tag-bubble fade-in" 
+              style="animation-delay:{{index * 0.04}}s;"
+              bindtap="onTagTap" data-name="{{item}}">
+          {{item}}
         </view>
       </block>
+    </view>
+    <view class="grid-empty" wx:if="{{tags.length === 0}}">
+      <image class="empty-icon-img" src="/images/icons/tag.png" mode="aspectFit"/>
+      <text class="empty-txt">暂无标签数据</text>
     </view>
   </view>
 </view>

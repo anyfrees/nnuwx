@@ -1,0 +1,137 @@
+/* 页面头部 */
+.list-header {
+  padding: 40rpx 36rpx 16rpx;
+}
+.list-header-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.list-header-icon {
+  width: 80rpx;
+  height: 80rpx;
+  margin-bottom: 16rpx;
+}
+.list-header-title {
+  font-size: 40rpx;
+  font-weight: 800;
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: 8rpx;
+}
+.list-header-count {
+  font-size: 24rpx;
+  color: var(--text-tertiary);
+}
+
+/* 文章列表 - 复用首页样式 */
+.article-section {
+  padding: 28rpx 36rpx 80rpx;
+}
+.article-card {
+  background: var(--bg-card);
+  border-radius: 24rpx;
+  margin-bottom: 32rpx;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  border: 1rpx solid var(--border-glass);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  transition: transform 0.3s ease;
+}
+.article-card:active {
+  transform: scale(0.98);
+}
+.card-cover-wrap {
+  position: relative;
+  width: 100%;
+  height: 340rpx;
+  overflow: hidden;
+}
+.card-cover {
+  width: 100%;
+  height: 100%;
+}
+.card-cover-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120rpx;
+  background: linear-gradient(transparent, rgba(0,0,0,0.5));
+}
+.card-cat-badge {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(10px);
+  color: var(--brand-primary);
+  font-size: 22rpx;
+  padding: 6rpx 18rpx;
+  border-radius: 20rpx;
+  font-weight: 600;
+  max-width: 200rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.card-body {
+  padding: 24rpx 28rpx 28rpx;
+}
+.card-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.4;
+  margin-bottom: 10rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.card-excerpt {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 20rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20rpx;
+  border-top: 1rpx solid var(--divider);
+  font-size: 24rpx;
+  color: var(--text-tertiary);
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 120rpx 40rpx;
+}
+.empty-icon-img {
+  width: 120rpx;
+  height: 120rpx;
+  display: block;
+  margin: 0 auto 20rpx;
+  opacity: 0.4;
+}
+.empty-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: 10rpx;
+}
+.empty-desc {
+  font-size: 26rpx;
+  color: var(--text-tertiary);
+  display: block;
+}

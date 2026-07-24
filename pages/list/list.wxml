@@ -1,0 +1,54 @@
+<view class="page-container">
+
+  <!-- 页面头部 -->
+  <view class="list-header">
+    <view class="list-header-inner">
+      <image class="list-header-icon" src="{{icon}}" mode="aspectFit"/>
+      <text class="list-header-title">{{title}}</text>
+      <text class="list-header-count">共 {{articles.length}} 篇文章</text>
+    </view>
+  </view>
+
+  <!-- 文章列表 -->
+  <view class="article-section">
+    <!-- 骨架屏 -->
+    <block wx:if="{{loading && articles.length === 0}}">
+      <view class="article-card glass-card" wx:for="{{[1,2,3]}}" wx:key="*this">
+        <view class="skeleton" style="height:320rpx;width:100%;border-radius:0;"></view>
+        <view class="card-body">
+          <view class="skeleton" style="height:28rpx;width:30%;margin-bottom:16rpx;"></view>
+          <view class="skeleton" style="height:40rpx;width:80%;margin-bottom:12rpx;"></view>
+          <view class="skeleton" style="height:24rpx;width:100%;margin-bottom:20rpx;"></view>
+          <view class="skeleton" style="height:22rpx;width:50%;"></view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 文章卡片 -->
+    <block wx:for="{{articles}}" wx:key="id" wx:for-item="item" wx:for-index="idx">
+      <view class="article-card float-up" style="animation-delay:{{idx * 0.08}}s;"
+            bindtap="onArticleTap" data-id="{{item.id}}">
+        <view class="card-cover-wrap">
+          <image class="card-cover" src="{{item.coverImage}}" mode="aspectFill" lazy-load/>
+          <view class="card-cover-gradient"></view>
+          <view class="card-cat-badge">{{item.categories[0] || '文章'}}</view>
+        </view>
+        <view class="card-body">
+          <text class="card-title">{{item.title}}</text>
+          <text class="card-excerpt">{{item.excerpt}}</text>
+          <view class="card-footer">
+            <text class="card-date"><image class="icon-sm" src="/images/icons/calendar.png" mode="aspectFit"/> {{item.date}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && articles.length === 0}}">
+      <image class="empty-icon-img" src="/images/icons/empty.png" mode="aspectFit"/>
+      <text class="empty-title">暂无文章</text>
+      <text class="empty-desc">该{{type === 'category' ? '分类' : '标签'}}下还没有文章</text>
+    </view>
+  </view>
+
+</view>

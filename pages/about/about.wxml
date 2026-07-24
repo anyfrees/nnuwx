@@ -1,0 +1,32 @@
+<view class="page-container">
+  <!-- 特性列表 -->
+  <view class="feature-section">
+    <text class="section-title"><image class="icon-md" src="/images/icons/sparkle.png" mode="aspectFit"/> 核心特性</text>
+    <view class="feature-grid">
+      <view class="feature-card card fade-in" wx:for="{{features}}" wx:key="title" style="animation-delay:{{index * 0.08}}s;">
+        <image class="feature-icon-img" src="{{item.icon}}" mode="aspectFit"/>
+        <text class="feature-title">{{item.title}}</text>
+        <text class="feature-desc">{{item.desc}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 相关链接 -->
+  <view class="links-section">
+    <text class="section-title"><image class="icon-md" src="/images/icons/share.png" mode="aspectFit"/> 相关链接</text>
+    <view class="link-list">
+      <view class="link-item card ripple" wx:for="{{links}}" wx:key="label" bindtap="copyLink" data-url="{{item.url}}">
+        <text class="link-label">{{item.label}}</text>
+        <view class="link-right">
+          <text class="link-url">{{item.url}}</text>
+          <text class="link-copy">复制</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部 -->
+  <view class="about-footer">
+    <text class="footer-copy">Copyright ©2022-2026 NNU.CN.</text>
+  </view>
+</view>

@@ -1,73 +1,112 @@
-<view class="container">
-  <!-- 顶部高质感搜索栏 -->
-  <view class="search-section">
-    <view class="search-box">
-      <text class="search-icon">🔍</text>
-      <input placeholder="搜索博客文章关键词..." bindinput="onSearchInput" value="{{keyword}}"/>
-      <text wx:if="{{keyword}}" class="clear-icon" bindtap="clearSearch">✕</text>
+<view class="page-container">
+
+  <!-- ===== 自定义导航栏 ===== -->
+  <view class="nav-bar" style="height:{{navHeight}}px; padding-top:{{statusBarHeight}}px;">
+    <view class="nav-content">
+      <text class="nav-title">NNU技术博客</text>
     </view>
   </view>
 
-  <!-- 当前选中的特殊筛选指示条 (如从分类页选择标签跳转进来) -->
-  <view class="filter-indicator" wx:if="{{currentTag || currentCategory !== '全部'}}">
-    <text class="filter-txt">正在筛选：{{currentTag ? ('🏷️ #' + currentTag) : ('📂 ' + currentCategory)}}</text>
-    <text class="clear-btn" bindtap="clearAllFilters">重置全部 ✕</text>
+  <!-- ===== 搜索入口 ===== -->
+  <view class="brand-section fade-in">
+    <view class="search-entry glass-card ripple" bindtap="goSearch">
+      <image class="search-icon-img" src="/images/icons/search.png" mode="aspectFit"/>
+      <text class="search-placeholder">搜索文章、标签、关键词...</text>
+    </view>
   </view>
 
-  <!-- 动态横向滑动分类胶囊栏 -->
-  <scroll-view scroll-x class="category-scroll" enable-flex show-scrollbar="{{false}}">
-    <view class="cat-pill {{currentCategory === '全部' && !currentTag ? 'active' : ''}}" bindtap="selectCategory" data-cat="全部">
-      全部
+  <!-- ===== 轮播 Banner ===== -->
+  <view class="banner-section fade-in" wx:if="{{banners.length > 0}}">
+    <view class="banner-header">
+      <text class="section-label"><image class="icon-md" src="/images/icons/sparkle.png" mode="aspectFit"/> 随机推荐</text>
     </view>
-    <block wx:for="{{categories}}" wx:key="*this">
-      <view class="cat-pill {{currentCategory === item && !currentTag ? 'active' : ''}}" bindtap="selectCategory" data-cat="{{item}}">
-        {{item}}
+    <swiper 
+      class="banner-swiper" 
+      indicator-dots="{{true}}" 
+      indicator-color="rgba(255,255,255,0.4)"
+      indicator-active-color="#FFFFFF"
+      autoplay="{{true}}" 
+      interval="4000" 
+      duration="500"
+      circular="{{true}}"
+      bindchange="onBannerChange"
+    >
+      <swiper-item wx:for="{{banners}}" wx:key="id">
+        <view class="banner-card" bindtap="onBannerTap" data-id="{{item.id}}">
+          <image class="banner-img" src="{{item.cover}}" mode="aspectFill" lazy-load/>
+          <view class="banner-mask"></view>
+          <view class="banner-info">
+            <text class="banner-cat">{{item.category}}</text>
+            <text class="banner-title">{{item.title}}</text>
+          </view>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <!-- ===== 分类胶囊 ===== -->
+  <view class="category-section fade-in">
+    <view class="section-header">
+      <text class="section-label"><image class="icon-md" src="/images/icons/folder.png" mode="aspectFit"/> 探索分类</text>
+    </view>
+    <scroll-view scroll-x class="cat-scroll" show-scrollbar="{{false}}" enhanced>
+      <view class="cat-capsule {{activeCategory === '' && activeTag === '' ? 'cat-active' : ''}}" 
+            bindtap="onCategoryTap" data-cat="全部">
+        <image class="cat-icon" src="/images/icons/clipboard.png" mode="aspectFit"/>
+        <text>全部</text>
+      </view>
+      <view class="cat-capsule {{activeCategory === item.key ? 'cat-active' : ''}}" wx:for="{{categories}}" wx:key="key" 
+            bindtap="onCategoryTap" data-cat="{{item.key}}">
+        <image class="cat-icon" src="{{item.icon}}" mode="aspectFit"/>
+        <text>{{item.name}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- ===== 文章列表 ===== -->
+  <view class="article-section">
+    <view class="section-header">
+      <text class="section-label"><image class="icon-md" src="/images/icons/document.png" mode="aspectFit"/> 最新文章</text>
+    </view>
+
+    <!-- 骨架屏加载 -->
+    <block wx:if="{{loading && filteredArticles.length === 0}}">
+      <view class="article-card glass-card" wx:for="{{[1,2,3]}}" wx:key="*this">
+        <view class="skeleton" style="height:320rpx;width:100%;border-radius:0;"></view>
+        <view class="card-body">
+          <view class="skeleton" style="height:28rpx;width:30%;margin-bottom:16rpx;"></view>
+          <view class="skeleton" style="height:40rpx;width:80%;margin-bottom:12rpx;"></view>
+          <view class="skeleton" style="height:24rpx;width:100%;margin-bottom:20rpx;"></view>
+          <view class="skeleton" style="height:22rpx;width:50%;"></view>
+        </view>
       </view>
     </block>
-  </scroll-view>
 
-  <!-- 文章列表区域 -->
-  <view class="article-list">
-    <block wx:for="{{filteredArticles}}" wx:key="id">
-      <view class="article-card" bindtap="goToDetail" data-id="{{item.id}}">
-        <!-- 文章封面图 -->
-        <image wx:if="{{item.coverImage}}" class="cover-image" src="{{item.coverImage}}" mode="aspectFill" lazy-load/>
-
+    <!-- 文章卡片 -->
+    <block wx:for="{{filteredArticles}}" wx:key="id" wx:for-item="item" wx:for-index="idx">
+      <view class="article-card float-up" style="animation-delay:{{idx * 0.08}}s;" 
+            bindtap="onArticleTap" data-id="{{item.id}}">
+        <view class="card-cover-wrap">
+          <image class="card-cover" src="{{item.coverImage}}" mode="aspectFill" lazy-load/>
+          <view class="card-cover-gradient"></view>
+          <view class="card-cat-badge">{{item.categories[0] || '文章'}}</view>
+        </view>
         <view class="card-body">
-          <view class="tag-row">
-            <text class="cat-badge">{{item.categories && item.categories.length > 0 ? item.categories[0] : '随笔'}}</text>
-            <text class="read-time">⏱ {{item.readTime || 3}} 分钟阅读</text>
-          </view>
-          
-          <text class="title">{{item.title}}</text>
-          <text class="excerpt">{{item.excerpt}}</text>
-          
-          <view class="footer-meta">
-            <view class="author-info">
-              <text class="author-name">👤 {{item.author || '博主'}}</text>
-              <text class="dot">·</text>
-              <text class="date">{{item.date}}</text>
-            </view>
-            <view class="stats">
-              <text class="stat-item">👁 {{item.views || 320}}</text>
-              <text class="stat-item">❤️ {{item.likes || 18}}</text>
-            </view>
+          <text class="card-title">{{item.title}}</text>
+          <text class="card-excerpt">{{item.excerpt}}</text>
+          <view class="card-footer">
+            <text class="card-date"><image class="icon-sm" src="/images/icons/calendar.png" mode="aspectFit"/> {{item.date}}</text>
           </view>
         </view>
       </view>
     </block>
 
-    <!-- 无文章时的优雅空状态 -->
-    <view class="empty-box" wx:if="{{filteredArticles.length === 0}}">
-      <text class="empty-emoji">📄</text>
-      <text class="empty-title">未找到相关文章</text>
-      <text class="empty-sub">尝试更换搜索关键词或重置分类筛选</text>
-      <button class="reset-btn" bindtap="clearAllFilters">清除筛选条件</button>
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && filteredArticles.length === 0}}">
+      <image class="empty-icon-img" src="/images/icons/empty.png" mode="aspectFit"/>
+      <text class="empty-title">暂无文章</text>
+      <text class="empty-desc">下拉刷新试试看</text>
     </view>
   </view>
 
-  <!-- 全局客服悬浮按钮 -->
-  <button open-type="contact" class="float-contact-btn" aria-label="联系客服">
-    <text class="contact-emoji">🎧</text>
-  </button>
 </view>

@@ -1,48 +1,93 @@
-<view class="detail-container">
-  <!-- 文章头部大图 (如有) -->
-  <image wx:if="{{article.coverImage}}" class="cover-banner" src="{{article.coverImage}}" mode="aspectFill"/>
+<view class="page-container">
+  <block wx:if="{{article}}">
 
-  <view class="article-header">
-    <text class="title">{{article.title}}</text>
-    
-    <view class="meta-bar">
-      <view class="author-block">
-        <text class="avatar-icon">👤</text>
-        <text class="author-name">{{article.author || '博主'}}</text>
+    <!-- 头部封面 -->
+    <view class="hero-section">
+      <image class="hero-cover" src="{{article.coverImage}}" mode="aspectFill"/>
+      <view class="hero-mask"></view>
+      <view class="hero-info">
+        <text class="hero-title">{{article.title}}</text>
+        <view class="hero-meta">
+          <text class="hero-cat" wx:for="{{article.categories}}" wx:key="*this" wx:for-item="c">{{c}}</text>
+        </view>
       </view>
-      <text class="date">{{article.date}}</text>
-      <text class="views">👁 {{article.views || 450}} 次阅读</text>
     </view>
 
-    <view class="categories-row">
-      <block wx:for="{{article.categories}}" wx:key="*this">
-        <text class="cat-tag">{{item}}</text>
+    <!-- 文章元信息 -->
+    <view class="meta-bar">
+      <view class="meta-left">
+        <text class="meta-date"><image class="icon-sm" src="/images/icons/calendar.png" mode="aspectFit"/> {{article.date}}</text>
+        <text class="meta-read"><image class="icon-sm" src="/images/icons/clock.png" mode="aspectFit"/> 阅读时长：{{article.readTime || 3}} 分钟</text>
+      </view>
+      <view class="meta-right">
+        <text class="meta-views"><image class="icon-sm" src="/images/icons/eye.png" mode="aspectFit"/> {{article.wordCount || 0}} 字</text>
+        <text class="meta-likes"><image class="icon-sm" src="/images/icons/heart.png" mode="aspectFit"/> {{article.likes || 0}} 点赞</text>
+      </view>
+    </view>
+
+    <!-- 正文内容 -->
+    <view class="content-card card">
+      <view class="content-body">
+        <rich-text nodes="{{formattedContent}}"></rich-text>
+      </view>
+      
+      <!-- 标签 -->
+      <view class="content-tags" wx:if="{{article.tags && article.tags.length > 0}}">
+        <text class="tags-label">标签：</text>
+        <text class="tag-item" wx:for="{{article.tags}}" wx:key="*this">#{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 相关推荐 -->
+    <view class="related-section" wx:if="{{relatedArticles.length > 0}}">
+      <view class="section-header">
+        <text class="section-label"><image class="icon-md" src="/images/icons/lightbulb.png" mode="aspectFit"/> 你可能喜欢</text>
+      </view>
+      <block wx:for="{{relatedArticles}}" wx:key="id">
+        <view class="related-card card ripple" bindtap="onRelatedTap" data-id="{{item.id}}">
+          <image class="related-cover" src="{{item.coverImage}}" mode="aspectFill"/>
+          <view class="related-body">
+            <text class="related-title">{{item.title}}</text>
+            <text class="related-date">{{item.date}}</text>
+          </view>
+        </view>
       </block>
     </view>
+
+    <!-- 底部占位（胶囊TabBar高度68rpx + margin 20rpx + safe-area） -->
+    <view style="height:120rpx;"></view>
+
+  </block>
+
+  <!-- 空状态 -->
+  <view class="empty-box" wx:if="{{!article}}">
+    <image class="empty-icon-img" src="/images/icons/document.png" mode="aspectFit"/>
+    <text class="empty-text">文章加载失败</text>
+    <view class="btn-primary" bindtap="goHome" style="width:240rpx;margin:20rpx auto;">返回首页</view>
   </view>
 
-  <!-- HTML 富文本排版解析区域 -->
-  <view class="rich-content">
-    <rich-text nodes="{{article.content}}"></rich-text>
-  </view>
-
-  <!-- 文章标签 -->
-  <view class="tags-section" wx:if="{{article.tags && article.tags.length > 0}}">
-    <text class="section-title">相关标签：</text>
-    <view class="tag-chips">
-      <block wx:for="{{article.tags}}" wx:key="*this">
-        <text class="tag-chip"># {{item}}</text>
-      </block>
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar" wx:if="{{article}}">
+    <view class="bar-action ripple" bindtap="goHome">
+      <image class="bar-icon-img" src="/images/icons/home.png" mode="aspectFit"/>
+      <text class="bar-label">首页</text>
+    </view>
+    <view class="bar-action ripple" bindtap="toggleFavorite">
+      <image class="bar-icon-img" src="{{isFavorite ? '/images/icons/star-filled.png' : '/images/icons/star.png'}}" mode="aspectFit"/>
+      <text class="bar-label">{{isFavorite ? '已收藏' : '收藏'}}</text>
+    </view>
+    <view class="bar-action ripple" bindtap="goComment">
+      <image class="bar-icon-img" src="/images/icons/comment.png" mode="aspectFit"/>
+      <text class="bar-label">评论</text>
+    </view>
+    <button class="bar-action share-btn" open-type="share">
+      <image class="bar-icon-img" src="/images/icons/share.png" mode="aspectFit"/>
+      <text class="bar-label">分享</text>
+    </button>
+    <view class="bar-action ripple" bindtap="copyLink">
+      <image class="bar-icon-img" src="/images/icons/copy.png" mode="aspectFit"/>
+      <text class="bar-label">复制</text>
     </view>
   </view>
 
-  <!-- 底部吸底快捷功能栏 -->
-  <view class="bottom-bar">
-    <button class="action-btn share-btn" open-type="share">
-      <text class="btn-icon">🔗</text> 分享文章
-    </button>
-    <button class="action-btn contact-btn" open-type="contact">
-      <text class="btn-icon">🎧</text> 咨询博主
-    </button>
-  </view>
 </view>

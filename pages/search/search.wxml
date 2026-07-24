@@ -1,0 +1,74 @@
+<view class="page-container">
+  <!-- 搜索栏 -->
+  <view class="search-bar-wrap">
+    <view class="search-bar glass-card">
+      <image class="search-icon-img" src="/images/icons/search.png" mode="aspectFit"/>
+      <input 
+        class="search-input" 
+        placeholder="搜索文章标题、内容、拼音..." 
+        value="{{keyword}}"
+        bindinput="onInput" 
+        bindconfirm="onSearch"
+        focus="{{true}}"
+        confirm-type="search"
+      />
+      <text class="clear-btn" wx:if="{{keyword}}" bindtap="onClear">✕</text>
+    </view>
+  </view>
+
+  <!-- 搜索结果 -->
+  <view class="search-results" wx:if="{{searchDone}}">
+    <view class="result-header">
+      <text class="result-count">找到 {{results.length}} 篇文章</text>
+    </view>
+
+    <block wx:for="{{results}}" wx:key="id">
+      <view class="result-card card ripple" bindtap="onArticleTap" data-id="{{item.id}}">
+        <image class="result-cover" src="{{item.coverImage}}" mode="aspectFill" lazy-load/>
+        <view class="result-body">
+          <text class="result-title">{{item.title}}</text>
+          <text class="result-excerpt">{{item.excerpt}}</text>
+          <view class="result-footer">
+            <view class="result-tags">
+              <text class="result-tag" wx:for="{{item.categories}}" wx:key="*this" wx:for-item="c">{{c}}</text>
+            </view>
+            <text class="result-date">{{item.date}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <view class="empty-result" wx:if="{{results.length === 0}}">
+      <image class="empty-icon-img" src="/images/icons/search.png" mode="aspectFit"/>
+      <text class="empty-title">未找到匹配文章</text>
+      <text class="empty-desc">试试其他关键词，或检查网络连接</text>
+    </view>
+  </view>
+
+  <!-- 搜索前：热门标签 + 历史 -->
+  <view class="search-hints" wx:if="{{!searchDone}}">
+    <!-- 热门搜索 -->
+    <view class="hint-section">
+      <view class="hint-header">
+        <text class="hint-title"><image class="icon-md" src="/images/icons/fire.png" mode="aspectFit"/> 热门搜索</text>
+      </view>
+      <view class="tag-cloud">
+        <text class="tag-pill" wx:for="{{hotTags}}" wx:key="*this" bindtap="onTagTap" data-kw="{{item}}">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 搜索历史 -->
+    <view class="hint-section" wx:if="{{searchHistory.length > 0}}">
+      <view class="hint-header">
+        <text class="hint-title"><image class="icon-md" src="/images/icons/clock.png" mode="aspectFit"/> 搜索历史</text>
+        <text class="hint-action" bindtap="clearHistory">清除</text>
+      </view>
+      <view class="history-list">
+        <view class="history-item" wx:for="{{searchHistory}}" wx:key="*this" bindtap="onHistoryTap" data-kw="{{item}}">
+          <image class="history-icon-img" src="/images/icons/clock.png" mode="aspectFit"/>
+          <text class="history-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,36 +1,49 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/search/search",
     "pages/categories/categories",
+    "pages/list/list",
     "pages/detail/detail",
-    "pages/profile/profile"
+    "pages/profile/profile",
+    "pages/favorites/favorites",
+    "pages/history/history",
+    "pages/about/about"
   ],
   "window": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#07C160",
-    "navigationBarTitleText": "NNU 博客",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#1677FF",
+    "navigationBarTitleText": "NNU技术博客",
     "navigationBarTextStyle": "white"
   },
   "tabBar": {
-    "color": "#94A3B8",
-    "selectedColor": "#07C160",
+    "custom": true,
+    "color": "#1A1A1A",
+    "selectedColor": "#1677FF",
     "backgroundColor": "#FFFFFF",
-    "borderStyle": "black",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页"
+        "text": "首页",
+        "iconPath": "images/tab-home.png",
+        "selectedIconPath": "images/tab-home-active.png"
       },
       {
         "pagePath": "pages/categories/categories",
-        "text": "专题分类"
+        "text": "分类",
+        "iconPath": "images/tab-cat.png",
+        "selectedIconPath": "images/tab-cat-active.png"
       },
       {
         "pagePath": "pages/profile/profile",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "images/tab-me.png",
+        "selectedIconPath": "images/tab-me-active.png"
       }
     ]
   },
   "style": "v2",
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
 }
