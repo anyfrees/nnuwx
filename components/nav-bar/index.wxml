@@ -1,0 +1,13 @@
+<!--
+  自定义导航栏组件
+  设计语言与主页面顶部一致：浅色毛玻璃 + 深蓝标题文字 + 居中布局
+  通过 props 传入标题，并自动适配状态栏高度
+-->
+<view class="nav-bar {{transparent ? 'nav-transparent' : ''}}" style="height:{{navHeight}}px; padding-top:{{statusBarHeight}}px;">
+  <view class="nav-content">
+    <text class="nav-title">{{title}}</text>
+  </view>
+</view>
+
+<!-- 占位，防止内容被导航栏遮挡（透明模式下不占位） -->
+<view wx:if="{{!transparent}}" class="nav-placeholder" style="height:{{navHeight}}px;"></view>

@@ -1,155 +1,415 @@
-/* ===== 自定义导航栏 ===== */
-.nav-bar {
-  background: var(--nav-bg);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  border-bottom: 1rpx solid var(--border-glass);
+/* ======================================================
+   首页 - 液态毛玻璃拟态风 + Bento Box 结构
+   Liquid Glass Bento Grid
+   ====================================================== */
+
+/* ===== 1. Bento Box 网格容器 ===== */
+.bento-grid {
+  display: flex;
+  gap: 16rpx;
+  padding: 16rpx 20rpx;
+  margin-top: 0;
 }
-.nav-content {
-  height: 88rpx;
+
+/* 左侧列：上下堆叠两个小卡片 */
+.bento-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+/* 左侧卡片撑满父容器高度 */
+.bento-left .bento-card {
+  flex: 1;
+}
+
+/* 右侧大卡片 */
+.bento-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== 2. 液态毛玻璃 Bento 卡片基础 ===== */
+.bento-card {
+  position: relative;
+  border-radius: 32rpx;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+              box-shadow 0.3s ease;
+}
+
+.bento-card:active {
+  transform: scale(0.97);
+}
+
+/* 内发光层：提升液态晶莹感 */
+.bento-card-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 1rpx 0 rgba(255, 255, 255, 0.25),
+              inset 0 -1rpx 0 rgba(255, 255, 255, 0.05);
+  z-index: 2;
+}
+
+/* ===== 3. 半透明微光水印图标 ===== */
+.bento-card-watermark {
+  position: absolute;
+  right: -10rpx;
+  bottom: -10rpx;
+  z-index: 1;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.watermark-icon {
+  width: 120rpx;
+  height: 120rpx;
+  filter: blur(2rpx);
+}
+
+/* 内容区（在水印上方） */
+.bento-card-content {
+  position: relative;
+  z-index: 3;
+  padding: 24rpx 24rpx 20rpx;
+}
+
+.bento-card-label {
+  display: block;
+  font-size: 22rpx;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+  text-transform: uppercase;
+  letter-spacing: 2rpx;
+  margin-bottom: 6rpx;
+  text-shadow: 0 1rpx 4rpx rgba(0, 0, 0, 0.15);
+}
+
+.bento-card-value {
+  display: block;
+  font-size: 56rpx;
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1;
+  margin-bottom: 4rpx;
+  text-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.15);
+}
+
+.bento-card-sub {
+  display: block;
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 400;
+  text-shadow: 0 1rpx 4rpx rgba(0, 0, 0, 0.1);
+}
+
+/* ===== 4. 左侧蓝色卡片内容微调 ===== */
+.bento-card.blue .bento-card-label {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.bento-card.blue .bento-card-value {
+  color: #FFFFFF;
+}
+
+.bento-card.blue .bento-card-sub {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ===== 5. 左侧橙色卡片 - 快捷入口（移除，改为随机栏目） ===== */
+.bento-quick-links {
+  display: flex;
+  gap: 12rpx;
+  margin-top: 12rpx;
+}
+
+.quick-link-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6rpx;
+  padding: 12rpx 16rpx;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 20rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.2);
+  flex: 1;
+  transition: all 0.2s ease;
+}
+
+.quick-link-item:active {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(0.94);
+}
+
+.quick-link-icon {
+  width: 36rpx;
+  height: 36rpx;
+  opacity: 0.9;
+}
+
+.quick-link-text {
+  font-size: 20rpx;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+}
+
+/* ===== 6. 右侧大卡片 - 精选文章 swiper 轮播 ===== */
+.bento-featured {
+  flex: 1;
+  min-height: 360rpx;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.bento-featured-swiper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.bento-featured-slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.bento-featured-cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.bento-featured-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.2) 45%,
+    rgba(0, 0, 0, 0.05) 100%
+  );
+}
+
+/* 底部毛玻璃文字底座 */
+.bento-featured-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  padding: 24rpx 24rpx 20rpx;
+  background: rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border-top: 1rpx solid rgba(255, 255, 255, 0.12);
+}
+
+.bento-featured-cat {
+  display: inline-block;
+  font-size: 20rpx;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.15);
+  padding: 4rpx 14rpx;
+  border-radius: 20rpx;
+  margin-bottom: 8rpx;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1rpx solid rgba(255, 255, 255, 0.2);
+}
+
+.bento-featured-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-shadow: 0 2rpx 6rpx rgba(0, 0, 0, 0.4);
+}
+
+.bento-featured-excerpt {
+  display: block;
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: 6rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
+/* 自定义 swiper 指示器（3点） */
+.bento-swiper-dots {
+  position: absolute;
+  top: 18rpx;
+  right: 18rpx;
+  z-index: 10;
+  display: flex;
+  gap: 8rpx;
+}
+
+.bento-swiper-dot {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.bento-swiper-dot.active {
+  width: 28rpx;
+  border-radius: 10rpx;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 8rpx rgba(255, 255, 255, 0.5);
+}
+.bento-featured-placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.nav-title {
-  font-size: 30rpx;
-  font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: 2rpx;
+
+.bento-placeholder-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12rpx;
+  z-index: 3;
+  position: absolute;
+  inset: 0;
+  justify-content: center;
 }
 
-/* ===== 搜索区 ===== */
-.brand-section {
-  padding: 32rpx 36rpx 8rpx;
+.bento-placeholder-icon {
+  width: 80rpx;
+  height: 80rpx;
+  opacity: 0.4;
 }
-.search-entry {
+
+.bento-placeholder-text {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+}
+
+/* ===== 7. 分类 Tab 栏 - 液态玻璃胶囊 ===== */
+.category-tabs {
+  padding: 28rpx 20rpx 12rpx;
+}
+
+.cat-tabs-scroll {
+  white-space: nowrap;
+  padding: 4rpx 0;
+}
+
+.cat-tab-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  padding: 14rpx 28rpx;
+  margin-right: 16rpx;
+  border-radius: 40rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  flex-shrink: 0;
+  vertical-align: middle;
+
+  /* 扁平化液态玻璃效果 — 通透轻盈 */
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1rpx solid rgba(255, 255, 255, 0.35);
+
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04),
+              inset 0 1rpx 0 rgba(255, 255, 255, 0.3);
+
+  transition: all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.cat-tab-pill:active {
+  transform: scale(0.94);
+}
+
+/* 选中态：悬浮液态玻璃 — 更浓郁的通透感，无蓝色 */
+.cat-tab-active {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border: 1rpx solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08),
+              0 1rpx 4rpx rgba(0, 0, 0, 0.04),
+              inset 0 1rpx 0 rgba(255, 255, 255, 0.5);
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.cat-tab-icon-sm {
+  width: 32rpx;
+  height: 32rpx;
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+.cat-tab-active .cat-tab-icon-sm {
+  transform: scale(1.12);
+}
+
+.cat-tab-text {
+  flex-shrink: 0;
+  line-height: 1.3;
+}
+
+/* ===== 8. 文章列表区域 ===== */
+.article-section {
+  padding: 24rpx 36rpx 20rpx;
+}
+
+.section-header {
   display: flex;
   align-items: center;
-  padding: 24rpx 32rpx;
-}
-.search-icon-img {
-  width: 36rpx;
-  height: 36rpx;
-  margin-right: 16rpx;
-  flex-shrink: 0;
-}
-.search-placeholder {
-  font-size: 28rpx;
-  color: var(--text-tertiary);
-}
-
-/* ===== Banner ===== */
-.banner-section {
-  padding: 0 36rpx 28rpx;
-}
-.banner-header {
+  justify-content: space-between;
   margin-bottom: 16rpx;
 }
+
+.section-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
 .section-label {
   font-size: 32rpx;
   font-weight: 700;
   color: var(--text-primary);
 }
-.banner-swiper {
-  width: 100%;
-  height: 340rpx;
-  border-radius: 28rpx;
-  overflow: hidden;
-}
-.banner-card {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  border-radius: 28rpx;
-  overflow: hidden;
-}
-.banner-img {
-  width: 100%;
-  height: 100%;
-}
-.banner-mask {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 200rpx;
-  background: linear-gradient(transparent, rgba(0,0,0,0.65));
-}
-.banner-info {
-  position: absolute;
-  bottom: 28rpx;
-  left: 28rpx;
-  right: 28rpx;
-}
-.banner-cat {
-  display: inline-block;
-  background: rgba(255,255,255,0.25);
-  backdrop-filter: blur(10px);
-  color: #FFF;
-  font-size: 20rpx;
-  padding: 6rpx 18rpx;
-  border-radius: 20rpx;
-  margin-bottom: 12rpx;
-  max-width: 200rpx;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.banner-title {
-  color: #FFF;
-  font-size: 32rpx;
-  font-weight: 700;
-  display: block;
-  text-shadow: 0 2rpx 8rpx rgba(0,0,0,0.3);
+
+.section-count {
+  font-size: 24rpx;
+  color: var(--text-tertiary);
 }
 
-/* ===== 分类区 ===== */
-.category-section {
-  padding: 0 36rpx 24rpx;
-}
-.section-header {
-  margin-bottom: 16rpx;
-}
-.cat-scroll {
-  white-space: nowrap;
-  padding: 8rpx 0;
-}
-.cat-capsule {
-  display: inline-flex;
-  align-items: center;
-  padding: 16rpx 32rpx;
-  margin-right: 16rpx;
-  border-radius: 44rpx;
-  background: rgba(255,255,255,0.72);
-  font-size: 26rpx;
-  color: var(--text-secondary);
-  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.04);
-  border: 1rpx solid rgba(0,0,0,0.05);
-  transition: all 0.25s ease;
-}
-.cat-icon {
-  width: 32rpx;
-  height: 32rpx;
-  margin-right: 10rpx;
-}
-.cat-capsule:active {
-  transform: scale(0.95);
-  background: var(--brand-primary);
-  color: #FFF;
-}
-.cat-active {
-  background: linear-gradient(135deg, #1677FF, #00C2FF) !important;
-  color: #FFF !important;
-  border-color: transparent !important;
-}
-
-/* ===== 文章列表 ===== */
-.article-section {
-  padding: 36rpx 36rpx 20rpx;
-}
+/* ===== 9. 文章卡片 ===== */
 .article-card {
   background: var(--bg-card);
   border-radius: 24rpx;
@@ -161,19 +421,23 @@
   -webkit-backdrop-filter: blur(24px);
   transition: transform 0.3s ease;
 }
+
 .article-card:active {
   transform: scale(0.98);
 }
+
 .card-cover-wrap {
   position: relative;
   width: 100%;
   height: 340rpx;
   overflow: hidden;
 }
+
 .card-cover {
   width: 100%;
   height: 100%;
 }
+
 .card-cover-gradient {
   position: absolute;
   bottom: 0;
@@ -182,6 +446,7 @@
   height: 120rpx;
   background: linear-gradient(transparent, rgba(0,0,0,0.5));
 }
+
 .card-cat-badge {
   position: absolute;
   top: 20rpx;
@@ -198,9 +463,11 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .card-body {
   padding: 24rpx 28rpx 28rpx;
 }
+
 .card-title {
   font-size: 34rpx;
   font-weight: 700;
@@ -212,6 +479,7 @@
   -webkit-line-clamp: 2;
   overflow: hidden;
 }
+
 .card-excerpt {
   font-size: 26rpx;
   color: var(--text-secondary);
@@ -222,6 +490,7 @@
   -webkit-line-clamp: 2;
   overflow: hidden;
 }
+
 .card-footer {
   display: flex;
   align-items: center;
@@ -231,6 +500,7 @@
   font-size: 24rpx;
   color: var(--text-tertiary);
 }
+
 .card-stats {
   display: flex;
   gap: 24rpx;
@@ -241,6 +511,7 @@
   text-align: center;
   padding: 120rpx 40rpx;
 }
+
 .empty-icon-img {
   width: 120rpx;
   height: 120rpx;
@@ -248,6 +519,7 @@
   margin: 0 auto 20rpx;
   opacity: 0.4;
 }
+
 .empty-title {
   font-size: 32rpx;
   font-weight: 700;
@@ -255,13 +527,15 @@
   display: block;
   margin-bottom: 10rpx;
 }
+
 .empty-desc {
   font-size: 26rpx;
   color: var(--text-tertiary);
   display: block;
 }
 
-/* ===== 自定义 TabBar 底部安全区 ===== */
+/* ===== iOS 18 悬浮胶囊 TabBar 底部预留 ===== */
 .page-container {
-  padding-bottom: 150rpx !important;
+  padding-bottom: 180rpx !important;
+  background: transparent;
 }

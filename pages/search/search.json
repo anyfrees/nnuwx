@@ -1,5 +1,7 @@
 {
   "navigationBarTitleText": "搜索文章",
-  "navigationBarBackgroundColor": "#1677FF",
-  "navigationBarTextStyle": "white"
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "nav-bar": "/components/nav-bar/index"
+  }
 }

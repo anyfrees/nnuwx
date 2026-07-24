@@ -38,7 +38,7 @@ view, text, image, input, button, scroll-view, swiper, swiper-item, block, navig
   box-sizing: border-box;
 }
 
-/* 强磨砂玻璃（用于搜索栏、导航等） */
+/* ===== 液态毛玻璃卡片通用样式 (Liquid Glass Card) ===== */
 .glass-card {
   background: var(--bg-card-glass);
   backdrop-filter: blur(30px);
@@ -46,6 +46,51 @@ view, text, image, input, button, scroll-view, swiper, swiper-item, block, navig
   border: 1rpx solid var(--border-glass);
   border-radius: 48rpx;
   box-shadow: var(--shadow-card);
+}
+
+/* ---- 液态毛玻璃 Bento Card ---- */
+.glass-bento-card {
+  /* 半透明背景 + 高斯模糊 — 接近透明液态玻璃 */
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  
+  /* 模拟液态玻璃的高光边缘 */
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  
+  /* 圆角与弥散阴影 */
+  border-radius: 32rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08),
+              0 2rpx 8rpx rgba(0, 0, 0, 0.04),
+              inset 0 0 16rpx rgba(255, 255, 255, 0.06);
+}
+
+/* 左侧蓝色液态玻璃卡片（资料块） — 实色填充 */
+.glass-bento-card.blue {
+  background: rgb(64, 158, 255);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(140, 200, 255, 0.35);
+  border-top: 1px solid rgba(180, 220, 255, 0.45);
+}
+
+/* 左侧橙色液态玻璃卡片（网络块） — 实色填充 */
+.glass-bento-card.orange {
+  background: rgb(255, 149, 77);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 180, 120, 0.35);
+  border-top: 1px solid rgba(255, 200, 150, 0.45);
+}
+
+/* 左侧青色液态玻璃卡片 */
+.glass-bento-card.cyan {
+  background: rgba(0, 194, 255, 0.1);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(100, 210, 255, 0.25);
+  border-top: 1px solid rgba(150, 230, 255, 0.35);
 }
 
 /* 磨砂玻璃卡片（全局统一） */

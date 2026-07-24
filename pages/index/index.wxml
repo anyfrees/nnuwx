@@ -1,64 +1,99 @@
+<!-- 液态毛玻璃导航栏 -->
+<nav-bar title="NNU技术博客" />
+
 <view class="page-container">
 
-  <!-- ===== 自定义导航栏 ===== -->
-  <view class="nav-bar" style="height:{{navHeight}}px; padding-top:{{statusBarHeight}}px;">
-    <view class="nav-content">
-      <text class="nav-title">NNU技术博客</text>
-    </view>
-  </view>
+  <!-- ===== Bento Box 液态毛玻璃网格区 ===== -->
+  <view class="bento-grid">
 
-  <!-- ===== 搜索入口 ===== -->
-  <view class="brand-section fade-in">
-    <view class="search-entry glass-card ripple" bindtap="goSearch">
-      <image class="search-icon-img" src="/images/icons/search.png" mode="aspectFit"/>
-      <text class="search-placeholder">搜索文章、标签、关键词...</text>
-    </view>
-  </view>
+    <!-- 左侧列：两个堆叠小卡片（随机栏目名称动态展示） -->
+    <view class="bento-left">
 
-  <!-- ===== 轮播 Banner ===== -->
-  <view class="banner-section fade-in" wx:if="{{banners.length > 0}}">
-    <view class="banner-header">
-      <text class="section-label"><image class="icon-md" src="/images/icons/sparkle.png" mode="aspectFit"/> 随机推荐</text>
-    </view>
-    <swiper 
-      class="banner-swiper" 
-      indicator-dots="{{true}}" 
-      indicator-color="rgba(255,255,255,0.4)"
-      indicator-active-color="#FFFFFF"
-      autoplay="{{true}}" 
-      interval="4000" 
-      duration="500"
-      circular="{{true}}"
-      bindchange="onBannerChange"
-    >
-      <swiper-item wx:for="{{banners}}" wx:key="id">
-        <view class="banner-card" bindtap="onBannerTap" data-id="{{item.id}}">
-          <image class="banner-img" src="{{item.cover}}" mode="aspectFill" lazy-load/>
-          <view class="banner-mask"></view>
-          <view class="banner-info">
-            <text class="banner-cat">{{item.category}}</text>
-            <text class="banner-title">{{item.title}}</text>
-          </view>
+      <!-- 左上：随机栏目卡片 - 蓝色液态毛玻璃 -->
+      <view class="bento-card glass-bento-card blue" bindtap="onLeftTopTap">
+        <view class="bento-card-watermark">
+          <image class="watermark-icon" src="/images/icons/sparkle.png" mode="aspectFit"/>
         </view>
-      </swiper-item>
-    </swiper>
+        <view class="bento-card-content">
+          <text class="bento-card-label">{{leftTopCard.name || '栏目'}}</text>
+          <text class="bento-card-value">{{leftTopCard.count || 0}}</text>
+          <text class="bento-card-sub">篇文章</text>
+        </view>
+        <view class="bento-card-glow"></view>
+      </view>
+
+      <!-- 左下：随机栏目卡片 - 橙色液态毛玻璃 -->
+      <view class="bento-card glass-bento-card orange" bindtap="onLeftBottomTap">
+        <view class="bento-card-watermark">
+          <image class="watermark-icon" src="/images/icons/globe.png" mode="aspectFit"/>
+        </view>
+        <view class="bento-card-content">
+          <text class="bento-card-label">{{leftBottomCard.name || '栏目'}}</text>
+          <text class="bento-card-value">{{leftBottomCard.count || 0}}</text>
+          <text class="bento-card-sub">篇文章</text>
+        </view>
+        <view class="bento-card-glow"></view>
+      </view>
+
+    </view>
+
+    <!-- 右侧大卡片：精选文章 swiper 轮播（3篇动态滚动） -->
+    <view class="bento-right">
+      <view class="bento-card bento-featured glass-bento-card" wx:if="{{featuredArticles.length > 0}}">
+        <swiper
+          class="bento-featured-swiper"
+          autoplay="{{true}}"
+          interval="3500"
+          duration="600"
+          circular="{{true}}"
+          bindchange="onFeaturedSwiperChange"
+        >
+          <swiper-item wx:for="{{featuredArticles}}" wx:key="id">
+            <view class="bento-featured-slide" bindtap="onFeaturedTap" data-id="{{item.id}}">
+              <image class="bento-featured-cover" src="{{item.coverImage}}" mode="aspectFill"/>
+              <view class="bento-featured-mask"></view>
+              <!-- 底部毛玻璃文字底座 -->
+              <view class="bento-featured-info">
+                <text class="bento-featured-cat">{{item.category}}</text>
+                <text class="bento-featured-title">{{item.title}}</text>
+                <text class="bento-featured-excerpt">{{item.excerpt}}</text>
+              </view>
+            </view>
+          </swiper-item>
+        </swiper>
+        <!-- 自定义指示器：3个点的进度条 -->
+        <view class="bento-swiper-dots">
+          <view class="bento-swiper-dot {{featuredSwiperIdx === 0 ? 'active' : ''}}"></view>
+          <view class="bento-swiper-dot {{featuredSwiperIdx === 1 ? 'active' : ''}}"></view>
+          <view class="bento-swiper-dot {{featuredSwiperIdx === 2 ? 'active' : ''}}"></view>
+        </view>
+        <view class="bento-card-glow"></view>
+      </view>
+      <!-- 无数据时的占位 -->
+      <view class="bento-card bento-featured glass-bento-card bento-featured-placeholder" wx:else>
+        <view class="bento-placeholder-content">
+          <image class="bento-placeholder-icon" src="/images/icons/rocket.png" mode="aspectFit"/>
+          <text class="bento-placeholder-text">正在加载精选内容…</text>
+        </view>
+      </view>
+    </view>
+
   </view>
 
-  <!-- ===== 分类胶囊 ===== -->
-  <view class="category-section fade-in">
-    <view class="section-header">
-      <text class="section-label"><image class="icon-md" src="/images/icons/folder.png" mode="aspectFit"/> 探索分类</text>
-    </view>
-    <scroll-view scroll-x class="cat-scroll" show-scrollbar="{{false}}" enhanced>
-      <view class="cat-capsule {{activeCategory === '' && activeTag === '' ? 'cat-active' : ''}}" 
+  <!-- ===== 分类 Tab 栏 - 液态玻璃胶囊 ===== -->
+  <view class="category-tabs">
+    <scroll-view scroll-x class="cat-tabs-scroll" show-scrollbar="{{false}}" enhanced>
+      <!-- 全部 -->
+      <view class="cat-tab-pill {{activeCategory === '' && activeTag === '' ? 'cat-tab-active' : ''}}" 
             bindtap="onCategoryTap" data-cat="全部">
-        <image class="cat-icon" src="/images/icons/clipboard.png" mode="aspectFit"/>
-        <text>全部</text>
+        <text class="cat-tab-text">全部</text>
       </view>
-      <view class="cat-capsule {{activeCategory === item.key ? 'cat-active' : ''}}" wx:for="{{categories}}" wx:key="key" 
+      <!-- 分类项 -->
+      <view class="cat-tab-pill {{activeCategory === item.key ? 'cat-tab-active' : ''}}" 
+            wx:for="{{categoriesWithStyle}}" wx:key="key" 
             bindtap="onCategoryTap" data-cat="{{item.key}}">
-        <image class="cat-icon" src="{{item.icon}}" mode="aspectFit"/>
-        <text>{{item.name}}</text>
+        <image class="cat-tab-icon-sm" src="{{item.icon}}" mode="aspectFit"/>
+        <text class="cat-tab-text">{{item.name}}</text>
       </view>
     </scroll-view>
   </view>
@@ -66,7 +101,11 @@
   <!-- ===== 文章列表 ===== -->
   <view class="article-section">
     <view class="section-header">
-      <text class="section-label"><image class="icon-md" src="/images/icons/document.png" mode="aspectFit"/> 最新文章</text>
+      <view class="section-header-left">
+        <image class="icon-md" src="/images/icons/document.png" mode="aspectFit"/>
+        <text class="section-label">最新文章</text>
+      </view>
+      <text class="section-count" wx:if="{{filteredArticles.length > 0}}">共 {{filteredArticles.length}} 篇</text>
     </view>
 
     <!-- 骨架屏加载 -->

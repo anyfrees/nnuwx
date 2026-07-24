@@ -1,4 +1,5 @@
 <view class="page-container">
+  <nav-bar title="我的" />
 
   <!-- 统计面板 -->
   <view class="stats-grid">

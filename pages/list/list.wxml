@@ -1,4 +1,5 @@
 <view class="page-container">
+  <nav-bar title="{{title || '文章列表'}}" />
 
   <!-- 页面头部 -->
   <view class="list-header">

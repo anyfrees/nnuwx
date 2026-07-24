@@ -1,4 +1,5 @@
 <view class="page-container">
+  <nav-bar title="阅读历史" />
   <view class="header-bar" wx:if="{{history.length > 0}}">
     <text class="header-count">最近 {{history.length}} 篇阅读记录</text>
     <text class="clear-btn" bindtap="clearAll">清空全部</text>

@@ -1,36 +1,74 @@
 <view class="page-container">
+  <!-- 透明导航栏，沉浸式 Hero 上方叠加（Hero 卡片已有标题，此处不显示文章标题避免溢出） -->
+  <nav-bar transparent="{{true}}" />
+
   <block wx:if="{{article}}">
 
-    <!-- 头部封面 -->
-    <view class="hero-section">
-      <image class="hero-cover" src="{{article.coverImage}}" mode="aspectFill"/>
-      <view class="hero-mask"></view>
-      <view class="hero-info">
-        <text class="hero-title">{{article.title}}</text>
-        <view class="hero-meta">
-          <text class="hero-cat" wx:for="{{article.categories}}" wx:key="*this" wx:for-item="c">{{c}}</text>
+    <!-- ====== 沉浸式 Hero Header ====== -->
+    <view class="article-header">
+      <!-- 封面背景图 + 暗化模糊遮罩 -->
+      <image class="header-bg" src="{{article.coverImage}}" mode="aspectFill"/>
+      <view class="header-overlay"></view>
+
+      <!-- 前景内容 -->
+      <view class="header-content">
+        <!-- 玻璃拟态分类胶囊标签 -->
+        <view class="header-badges">
+          <text class="badge-item" wx:for="{{article.categories}}" wx:key="*this">{{item}}</text>
+        </view>
+
+        <!-- 主标题 -->
+        <text class="header-title">{{article.title}}</text>
+
+        <!-- 文章元数据网格（三行） -->
+        <view class="header-meta-grid">
+          <!-- 第一行：发表时间、更新时间 -->
+          <view class="meta-row">
+            <view class="meta-cell">
+              <image class="meta-icon-sm" src="/images/icons/calendar.png" mode="aspectFit"/>
+              <text class="meta-text">发布于 {{article.date}}</text>
+            </view>
+            <view class="meta-cell">
+              <image class="meta-icon-sm" src="/images/icons/sync.png" mode="aspectFit"/>
+              <text class="meta-text">更新于 {{article.updatedDate || article.date}}</text>
+            </view>
+          </view>
+          <!-- 第二行：字数、阅读时长、阅读量 -->
+          <view class="meta-row">
+            <view class="meta-cell">
+              <text class="meta-text">{{article.wordCountStr || '0 字'}}</text>
+            </view>
+            <view class="meta-cell">
+              <text class="meta-text">{{article.readTime || 3}} 分钟阅读</text>
+            </view>
+            <view class="meta-cell">
+              <image class="meta-icon-sm" src="/images/icons/eye.png" mode="aspectFit"/>
+              <text class="meta-text">{{article.views || 0}} 阅读</text>
+            </view>
+          </view>
+          <!-- 第三行：发布地点/国家、评论数 -->
+          <view class="meta-row">
+            <view class="meta-cell">
+              <image class="meta-icon-sm" src="/images/icons/globe.png" mode="aspectFit"/>
+              <text class="meta-text">{{article.location || 'China'}}</text>
+            </view>
+            <view class="meta-cell">
+              <image class="meta-icon-sm" src="/images/icons/comment.png" mode="aspectFit"/>
+              <text class="meta-text">{{article.commentCount || 0}} 评论</text>
+            </view>
+          </view>
         </view>
       </view>
     </view>
 
-    <!-- 文章元信息 -->
-    <view class="meta-bar">
-      <view class="meta-left">
-        <text class="meta-date"><image class="icon-sm" src="/images/icons/calendar.png" mode="aspectFit"/> {{article.date}}</text>
-        <text class="meta-read"><image class="icon-sm" src="/images/icons/clock.png" mode="aspectFit"/> 阅读时长：{{article.readTime || 3}} 分钟</text>
-      </view>
-      <view class="meta-right">
-        <text class="meta-views"><image class="icon-sm" src="/images/icons/eye.png" mode="aspectFit"/> {{article.wordCount || 0}} 字</text>
-        <text class="meta-likes"><image class="icon-sm" src="/images/icons/heart.png" mode="aspectFit"/> {{article.likes || 0}} 点赞</text>
-      </view>
-    </view>
+    <!-- ====== 半透明磨砂主体容器（覆盖顶部图片） ====== -->
+    <view class="article-body-card">
 
-    <!-- 正文内容 -->
-    <view class="content-card card">
+      <!-- 正文内容 -->
       <view class="content-body">
         <rich-text nodes="{{formattedContent}}"></rich-text>
       </view>
-      
+
       <!-- 标签 -->
       <view class="content-tags" wx:if="{{article.tags && article.tags.length > 0}}">
         <text class="tags-label">标签：</text>
@@ -54,8 +92,8 @@
       </block>
     </view>
 
-    <!-- 底部占位（胶囊TabBar高度68rpx + margin 20rpx + safe-area） -->
-    <view style="height:120rpx;"></view>
+    <!-- 底部占位（胶囊操作栏 + 安全区） -->
+    <view style="height:160rpx;"></view>
 
   </block>
 
@@ -66,13 +104,20 @@
     <view class="btn-primary" bindtap="goHome" style="width:240rpx;margin:20rpx auto;">返回首页</view>
   </view>
 
-  <!-- 底部操作栏 -->
+  <!-- ====== 右侧悬浮工具栏 ====== -->
+  <view class="floating-toolbar {{showBackTop ? 'toolbar-visible' : ''}}" wx:if="{{article}}">
+    <view class="toolbar-btn ripple" bindtap="scrollToTop">
+      <text class="toolbar-arrow">↑</text>
+    </view>
+  </view>
+
+  <!-- 底部操作栏（文章操作） -->
   <view class="bottom-bar" wx:if="{{article}}">
     <view class="bar-action ripple" bindtap="goHome">
       <image class="bar-icon-img" src="/images/icons/home.png" mode="aspectFit"/>
       <text class="bar-label">首页</text>
     </view>
-    <view class="bar-action ripple" bindtap="toggleFavorite">
+    <view class="bar-action ripple {{isFavorite ? 'favorited' : ''}}" bindtap="toggleFavorite">
       <image class="bar-icon-img" src="{{isFavorite ? '/images/icons/star-filled.png' : '/images/icons/star.png'}}" mode="aspectFit"/>
       <text class="bar-label">{{isFavorite ? '已收藏' : '收藏'}}</text>
     </view>

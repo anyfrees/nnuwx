@@ -6,7 +6,8 @@ Page({
     isFavorite: false,
     formattedContent: '',
     relatedArticles: [],
-    showSharePanel: false
+    showSharePanel: false,
+    showBackTop: false
   },
 
   onLoad(options) {
@@ -37,15 +38,42 @@ Page({
     // 相关文章推荐
     const related = this.getRelatedArticles(articles, art);
 
+    // 补充元数据字段
+    const wordCount = art.wordCount || 0;
+    const enrichedArticle = {
+      ...art,
+      wordCountStr: this.formatWordCount(wordCount),
+      readTime: art.readTime || Math.max(1, Math.ceil(wordCount / 500)),
+      location: art.location || 'China',
+      commentCount: art.commentCount || 0,
+      updatedDate: art.updatedDate || art.date || ''
+    };
+
     this.setData({
-      article: art,
+      article: enrichedArticle,
       isFavorite: isFav,
       formattedContent: html,
       relatedArticles: related
     });
 
     // 重新设置导航标题
-    wx.setNavigationBarTitle({ title: art.title.slice(0, 12) || '文章详情' });
+    wx.setNavigationBarTitle({ title: (art.title || '').slice(0, 12) || '文章详情' });
+
+    // 监听页面滚动以控制返回顶部按钮
+    this._scrollHandler = () => {
+      const query = wx.createSelectorQuery();
+      query.select('.article-header').boundingClientRect();
+      query.exec((res) => {
+        if (res && res[0]) {
+          const heroBottom = res[0].bottom;
+          // Hero 区域滚出视口 60% 后显示返回顶部
+          const shouldShow = heroBottom < (res[0].height * 0.4) * -1;
+          if (shouldShow !== this.data.showBackTop) {
+            this.setData({ showBackTop: shouldShow });
+          }
+        }
+      });
+    };
   },
 
   formatContent(rawHtml) {
@@ -201,5 +229,35 @@ Page({
   // 返回首页
   goHome() {
     wx.switchTab({ url: '/pages/index/index' });
+  },
+
+  // 格式化字数（如 1300 → "1.3k"）
+  formatWordCount(count) {
+    if (!count || count === 0) return '0 字';
+    if (count >= 1000) {
+      const k = (count / 1000).toFixed(1).replace(/\.0$/, '');
+      return k + 'k 字';
+    }
+    return count + ' 字';
+  },
+
+  // 返回顶部
+  scrollToTop() {
+    wx.pageScrollTo({
+      scrollTop: 0,
+      duration: 350
+    });
+  },
+
+  // 页面滚动监听
+  onPageScroll() {
+    if (this._scrollHandler) {
+      this._scrollHandler();
+    }
+  },
+
+  // 页面卸载清理
+  onUnload() {
+    this._scrollHandler = null;
   }
 });

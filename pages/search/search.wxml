@@ -1,4 +1,5 @@
 <view class="page-container">
+  <nav-bar title="搜索文章" />
   <!-- 搜索栏 -->
   <view class="search-bar-wrap">
     <view class="search-bar glass-card">

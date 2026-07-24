@@ -1,4 +1,5 @@
 <view class="page-container">
+  <nav-bar title="关于NNU技术博客" />
   <!-- 特性列表 -->
   <view class="feature-section">
     <text class="section-title"><image class="icon-md" src="/images/icons/sparkle.png" mode="aspectFit"/> 核心特性</text>

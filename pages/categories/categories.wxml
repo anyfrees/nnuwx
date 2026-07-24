@@ -1,4 +1,5 @@
 <view class="page-container">
+  <nav-bar title="专题分类" />
   <!-- Segment 切换 -->
   <view class="seg-bar">
     <view class="seg-item {{activeTab === 'category' ? 'seg-active' : ''}}" bindtap="switchTab" data-tab="category">

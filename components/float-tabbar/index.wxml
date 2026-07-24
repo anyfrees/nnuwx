@@ -1,6 +1,7 @@
 <!--
-  iOS 18 / VisionOS 风格悬浮胶囊 TabBar
+  iOS 18 / VisionOS 风格悬浮胶囊 TabBar（可复用组件）
   设计特征：悬浮胶囊 + 毛玻璃 + 分离式搜索球 + 选中态高亮背板
+  与首页底部自定义 TabBar 完全一致，可用于非 tabBar 页面（如文章详情页）
 -->
 <view class="custom-tabbar-container">
 

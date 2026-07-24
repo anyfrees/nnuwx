@@ -1,6 +1,13 @@
 Component({
+  properties: {
+    // 当前选中项：0=首页 1=分类 2=我的
+    selected: {
+      type: Number,
+      value: 0
+    }
+  },
+
   data: {
-    selected: 0,
     list: [
       {
         pagePath: '/pages/index/index',

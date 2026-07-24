@@ -129,7 +129,7 @@
   display: block;
 }
 
-/* ===== 自定义 TabBar 底部安全区 ===== */
+/* ===== iOS 18 悬浮胶囊 TabBar 底部预留（110rpx 胶囊 + 16rpx 间距 + 安全区） ===== */
 .page-container {
-  padding-bottom: 150rpx !important;
+  padding-bottom: 180rpx !important;
 }
